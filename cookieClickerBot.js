@@ -1,4 +1,4 @@
-function buyObject() {
+function buyBuilding() {
    var bestDeal = 0;
    var dealId = -1;
    for(var i in Game.ObjectsById) {
@@ -38,7 +38,7 @@ function buyStuff() {
       firstUpgrade.buy();
    } else {
       if((Game.UpgradesInStore.length == 0) || ((firstUpgrade.getPrice() / 10) >= Game.cookies)) {
-         buyObject();
+         buyBuilding();
       }
    }
 }
@@ -47,18 +47,23 @@ function grabGoldenCookies() {
    if(Game.goldenCookie.life > 0) {
       Game.goldenCookie.click(); 
    }
+   if(Game.seasonPopup.life > 0) {
+      Game.seasonPopup.click();
+   }
 }
 
 function startBots() {
    dealGrabber = setInterval(buyStuff, 10);
    goldenCookieGrabber = setInterval(grabGoldenCookies, 1000);
    cookieClickBot = setInterval(function() { Game.ClickCookie(); }, 0);
+   wrinklerPopper = setInterval(Game.CollectWrinklers, 1000 * 60 * 60)
 }
 
 function stopBots() {
    clearInterval(dealGrabber);
    clearInterval(goldenCookieGrabber);
    clearInterval(cookieClickBot);
+   clearInterval(wrinklerPopper);
 }
 
 function restartBots() {
@@ -77,4 +82,4 @@ function resetGame() {
    Game.Reset();
 }
 
-wrinklerPopper = setInterval(Game.CollectWrinklers, 1000 * 60 * 60)
+startBots();
