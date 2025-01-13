@@ -44,11 +44,8 @@ function buyStuff() {
 }
 
 function grabGoldenCookies() {
-   if(Game.goldenCookie.life > 0) {
-      Game.goldenCookie.click(); 
-   }
-   if(Game.seasonPopup.life > 0) {
-      Game.seasonPopup.click();
+   while(document.getElementsByClassName('shimmer').length > 0) {
+      document.getElementsByClassName('shimmer').item(0).click();
    }
 }
 
