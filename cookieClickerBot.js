@@ -1,6 +1,6 @@
 function buyBuilding() {
    var bestDeal = 0;
-   var dealId = -1;
+   var dealId = null;
    for(var i in Game.ObjectsById) {
       var me = Game.ObjectsById[i];
       if(me.amount == 0) {
@@ -8,13 +8,11 @@ function buyBuilding() {
       }
       var deal = me.storedTotalCps / me.amount * Game.globalCpsMult / me.price;
       if(deal > bestDeal) {
-         if(me.price < Game.cookies) {
-            bestDeal = deal;
-            dealId = i;
-         } 
+         bestDeal = deal;
+         dealId = i;
       }
    }
-   if(dealId > -1) {
+   if(dealId && Game.ObjectsById[dealId].price <= Game.cookies) {
       Game.ObjectsById[dealId].buy();
    }
 }
@@ -37,7 +35,8 @@ function buyStuff() {
    if(Game.UpgradesInStore.length > 0 && firstUpgrade.getPrice() < Game.cookies) {
       firstUpgrade.buy();
    } else {
-      if((Game.UpgradesInStore.length == 0) || ((firstUpgrade.getPrice() / 10) >= Game.cookies)) {
+      const wait = firstUpgrade ? (firstUpgrade.getPrice() - Game.cookies) / Game.cookiesPs : 101;
+      if((Game.UpgradesInStore.length == 0) || (wait > 100)) {
          buyBuilding();
       }
    }
